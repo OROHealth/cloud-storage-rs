@@ -2,13 +2,16 @@ use crate::{
     bucket_access_control::{BucketAccessControl, Entity, NewBucketAccessControl},
     error::GoogleResponse,
     resources::common::ListResponse,
+    token::RefreshableToken,
 };
 
 /// Operations on [`BucketAccessControl`](BucketAccessControl)s.
-#[derive(Debug)]
-pub struct BucketAccessControlClient<'a>(pub(super) &'a super::Client);
+pub struct BucketAccessControlClient<'a, R: RefreshableToken>(pub(super) &'a super::Client<R>);
 
-impl<'a> BucketAccessControlClient<'a> {
+impl<'a, R> BucketAccessControlClient<'a, R>
+where
+    R: RefreshableToken,
+{
     /// Create a new `BucketAccessControl` using the provided `NewBucketAccessControl`, related to
     /// the `Bucket` provided by the `bucket_name` argument.
     ///

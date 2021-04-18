@@ -2,14 +2,18 @@ use crate::{
     bucket::{IamPolicy, TestIamPermission},
     error::GoogleResponse,
     resources::common::ListResponse,
+    token::RefreshableToken,
     Bucket, NewBucket,
 };
 
 /// Operations on [`Bucket`]()s.
 #[derive(Debug)]
-pub struct BucketClient<'a>(pub(super) &'a super::Client);
+pub struct BucketClient<'a, T: RefreshableToken>(pub(super) &'a super::Client<T>);
 
-impl<'a> BucketClient<'a> {
+impl<'a, T> BucketClient<'a, T>
+where
+    T: RefreshableToken,
+{
     /// Creates a new `Bucket`. There are many options that you can provide for creating a new
     /// bucket, so the `NewBucket` resource contains all of them. Note that `NewBucket` implements
     /// `Default`, so you don't have to specify the fields you're not using. And error is returned
