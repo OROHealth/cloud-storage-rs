@@ -14,11 +14,11 @@ pub use hmac_key::HmacKeyClient;
 pub use object::ObjectClient;
 pub use object_access_control::ObjectAccessControlClient;
 
-use crate::token::{RefreshableToken, Token};
+use crate::token::{Token, TokenCache};
 
 /// The primary synchronous entrypoint to perform operations with Google Cloud Storage.
 #[derive(Debug)]
-pub struct Client<R: RefreshableToken> {
+pub struct Client<R: TokenCache> {
     runtime: tokio::runtime::Runtime,
     client: crate::client::Client<R>,
 }
@@ -35,7 +35,7 @@ impl Client<Token> {
 
 impl<R> Client<R>
 where
-    R: RefreshableToken,
+    R: TokenCache,
 {
     /// Initializer with a provided refreshable token
     pub fn with_token_cache(token_cache: R) -> crate::Result<Self> {
